@@ -1,6 +1,8 @@
+
 from django.urls import path, include
 
 from . import views
+from .views import GenerateRandomUserView, UsersListView
 
 app_name = 'api_app'
 
@@ -11,6 +13,9 @@ urlpatterns=[
     path("polls/<int:question_id>/", views.details, name="details"),
     path("polls/<int:question_id>/results/", views.results, name="results"),
     path("polls/<int:question_id>/vote/", views.vote, name="vote"),
+
+    path('users/', UsersListView.as_view(), name='users_list'),
+    path('generate/', GenerateRandomUserView.as_view(), name='generate'),
 
     # api
     path("polls/", views.getData, name="findAllPolls")

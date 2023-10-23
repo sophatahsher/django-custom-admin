@@ -31,7 +31,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -61,13 +60,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-#ROOT_URLCONF = 'project_setting.urls'
-ROOT_URLCONF = 'api_app.urls'
+ROOT_URLCONF = 'project_setting.urls'
+#ROOT_URLCONF = 'api_app.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,14 +85,7 @@ WSGI_APPLICATION = 'project_setting.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-EMAIL_HOST = get_env('EMAIL_HOST')
-print(EMAIL_HOST)
-
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.environ.get('MYSQL_DB', ''),
@@ -101,9 +93,17 @@ DATABASES = {
         'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
         'HOST': os.environ.get('MYSQL_HOST', ''),
         'PORT': os.environ.get('MYSQL_PORT', '')
-    },
+    }
+    # 'default': {
+    #     'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
+    #     'NAME': os.environ.get('POSTGRES_NAME', BASE_DIR / "db.sqlite3"),
+    #     'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+    #     'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'postgres'),
+    #     'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+    #     'PORT': os.environ.get('POSTGRES_PORT', '5432')
+    # },
 }
-
+    
 print(f'---------{DATABASES}')
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

@@ -1,0 +1,41 @@
+FROM python:3.10.0-alpine
+
+ENV PYTHONUNBUFFERED 1
+# ENV PYTHONUNBUFFERED 1
+# ENV INSTALL_PATH /djangoblog
+# RUN mkdir -p $INSTALL_PATH
+# WORKDIR $INSTALL_PATH
+
+WORKDIR /workspace
+
+# install psycopg2 dependencies
+RUN --mount=type=cache,target=/var/cache/apt \
+    apk update \
+    && apk add postgresql-dev gcc python3-dev musl-dev
+#RUN --mount=type=cache,target=/var/cache/apt \
+#    apt-get update && apt-get install -y --no-install-recommends libsm6 libxext6 && add postgresql-dev gcc python3-dev musl-dev
+
+RUN apk add --no-cache tini
+
+# install dependencies
+RUN pip install --upgrade pip
+
+COPY requirements.txt .
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -r requirements.txt
+
+# add bash into alpine linux
+# RUN apk add --update bash && rm -rf /var/cache/apk/*
+
+# install dependencies
+# RUN pip install --upgrade pip
+RUN pip install watchdog
+
+COPY . /workspace
+
+#RUN chmod +x docker-entrypoint.sh
+#RUN chmod +x docker-entrypoint.sh
+#ENTRYPOINT ["./docker-entrypoint.sh"]
+
+VOLUME ["/workspace/storage"]
+# CMD gunicorn -b 0.0.0.0:8000 --access-logfile - "config.wsgi:application"
